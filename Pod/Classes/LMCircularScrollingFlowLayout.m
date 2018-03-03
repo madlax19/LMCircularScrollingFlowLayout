@@ -111,7 +111,9 @@
         layoutAttributes = [layoutAttributes arrayByAddingObjectsFromArray:wrappingAttributes];
     }
     else {
-        NSArray* wrappingAttributes = [super layoutAttributesForElementsInRect:CGRectMake(rect.origin.x - [super collectionViewContentSize].width,
+    	CGSize size = [super collectionViewContentSize];
+        float correction = rect.origin.x > 0 && rect.origin.x < size.width ? 0 : self.collectionView.bounds.size.width;
+        NSArray* wrappingAttributes = [super layoutAttributesForElementsInRect:CGRectMake(rect.origin.x - [super collectionViewContentSize].width - correction,
                                                                                           rect.origin.y,
                                                                                           rect.size.width,
                                                                                           rect.size.height)];
