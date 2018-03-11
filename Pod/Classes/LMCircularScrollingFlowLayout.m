@@ -96,13 +96,14 @@
 
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
-    NSArray* layoutAttributes = [super layoutAttributesForElementsInRect:rect];
+    NSArray* layoutAttributes = [[NSArray alloc] initWithArray:[super layoutAttributesForElementsInRect:rect] copyItems:YES];
 
     if (self.scrollDirection == UICollectionViewScrollDirectionVertical) {
-        NSArray* wrappingAttributes = [super layoutAttributesForElementsInRect:CGRectMake(rect.origin.x,
-                                                                                          rect.origin.y - [super collectionViewContentSize].height,
-                                                                                          rect.size.width,
-                                                                                          rect.size.height)];
+        NSArray* wrappingAttributes = [[NSArray alloc] initWithArray: [super layoutAttributesForElementsInRect:CGRectMake(rect.origin.x,
+                                                                                           rect.origin.y - [super collectionViewContentSize].height,
+                                                                                           rect.size.width,
+                                                                                           rect.size.height)]
+                                                           copyItems:YES];
         
         for (UICollectionViewLayoutAttributes* attributes in wrappingAttributes) {
             attributes.center = CGPointMake(attributes.center.x, attributes.center.y + [super collectionViewContentSize].height + self.minimumLineSpacing);
@@ -112,11 +113,12 @@
     }
     else {
     	CGSize size = [super collectionViewContentSize];
-        float correction = rect.origin.x > 0 && rect.origin.x < size.width ? 0 : self.collectionView.bounds.size.width;
-        NSArray* wrappingAttributes = [super layoutAttributesForElementsInRect:CGRectMake(rect.origin.x - [super collectionViewContentSize].width - correction,
-                                                                                          rect.origin.y,
-                                                                                          rect.size.width,
-                                                                                          rect.size.height)];
+        float correction = rect.origin.x > 0 && rect.origin.x < size.width ? 0 : self.collectionView.bounds.size.width / 2.0;
+        NSArray* wrappingAttributes = [[NSArray alloc] initWithArray: [super layoutAttributesForElementsInRect:CGRectMake(rect.origin.x - [super collectionViewContentSize].width - correction,
+                                                                                           rect.origin.y,
+                                                                                           rect.size.width,
+                                                                                           rect.size.height)]
+                                                           copyItems:YES];
         
         for (UICollectionViewLayoutAttributes* attributes in wrappingAttributes) {
             attributes.center = CGPointMake(attributes.center.x + [super collectionViewContentSize].width + self.minimumLineSpacing, attributes.center.y);
